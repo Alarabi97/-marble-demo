@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>إتش الذهبية</title>
+<style>
+body{font-family:Tahoma,sans-serif;background:#FAF6EE;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;margin:0}
+.app{max-width:420px;width:100%;background:#FDF6F3;border-radius:32px;padding:28px 20px;box-shadow:0 12px 48px rgba(201,168,76,0.2);text-align:center}
+.logo{display:inline-flex;align-items:center;justify-content:center;width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#E8D5A3,#C9A84C);box-shadow:0 8px 40px rgba(201,168,76,0.4);margin-bottom:12px}
+.logo span{font-size:48px;color:#fff;font-weight:bold}
+h1{color:#2C241C;margin:8px 0 4px;font-size:24px}
+.sub{color:#6B5F53;font-size:14px;margin-bottom:20px}
+.roles{display:flex;gap:8px;margin:16px 0}
+.role{flex:1;padding:12px 8px;border:2px solid #E8D5A3;border-radius:14px;background:#fff;font-size:13px;font-weight:600;color:#6B5F53;cursor:pointer}
+.role.on{background:linear-gradient(135deg,#E8D5A3,#C9A84C);border-color:#C9A84C;color:#fff}
+.box{background:#FAF6EE;border-radius:20px;padding:20px;min-height:200px;text-align:right}
+.item{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;border-right:4px solid #C9A84C}
+.item b{font-size:15px;color:#2C241C}
+.item small{color:#6B5F53;font-size:12px;display:block;margin-top:4px}
+.add{width:40px;height:40px;border-radius:50%;background:#C9A84C;color:#fff;border:none;font-size:22px;cursor:pointer;float:left;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="logo"><span>إتش</span></div>
+<h1>منصة إحسان</h1>
+<div class="sub">✦ لإدارة الفعاليات ✦</div>
+<div class="roles">
+<button class="role on" onclick="setRole('admin',this)">👑 إحسان</button>
+<button class="role" onclick="setRole('staff',this)">👩‍💼 مساعدة</button>
+</div>
+<div class="box" id="box"></div>
+</div>
+<script>
+var role='admin';
+var events=[
+{t:'حفل زفاف سارة',d:'2024-12-20',s:'نشط'},
+{t:'عشاء عائلي',d:'2024-12-25',s:'قادم'},
+{t:'حفل خطوبة ليلى',d:'2024-12-10',s:'منتهي'}
+];
+function setRole(r,btn){
+role=r;
+var btns=document.querySelectorAll('.role');
+for(var i=0;i<btns.length;i++)btns[i].classList.remove('on');
+btn.classList.add('on');
+render();
+}
+function render(){
+var h='';
+if(role==='admin'){
+h+='<button class="add" onclick="addEvent()">+</button><h3>📋 الفعاليات ('+events.length+')</h3><div style="clear:both"></div>';
+}
+else{
+h+='<h3>📋 الفعاليات ('+events.length+')</h3><p style="color:#C9A84C;font-size:12px">👀 عرض فقط</p>';
+}
+for(var i=0;i<events.length;i++){
+h+='<div class="item"><b>'+events[i].t+'</b><small>📅 '+events[i].d+' • '+events[i].s+'</small>';
+if(role==='admin')h+='<div style="margin-top:8px"><button onclick="del('+i+')" style="background:none;border:none;font-size:16px;cursor:pointer">🗑️</button></div>';
+h+='</div>';
+}
+document.getElementById('box').innerHTML=h;
+}
+function addEvent(){
+var t=prompt('اسم الفعالية:');
+if(t){
+var d=prompt('التاريخ (مثال 2024-12-30):');
+events.push({t:t,d:d||'بدون تاريخ',s:'قادم'});
+render();
+}
+}
+function del(i){
+if(confirm('حذف الفعالية؟')){
+events.splice(i,1);
+render();
+}
+}
+render();
+</script>
+</body>
+</html>
